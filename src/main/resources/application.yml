@@ -8,12 +8,14 @@ spring:
 
   data:
     redis:
-      database: 0
       port: 6379
       host: localhost
 
 mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: per.yy.communityhealthmanagement.entity
   configuration:
+    #驼峰命名
     map-underscore-to-camel-case: true
 
 email:

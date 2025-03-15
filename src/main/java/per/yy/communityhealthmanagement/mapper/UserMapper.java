@@ -9,10 +9,6 @@ import per.yy.communityhealthmanagement.entity.User;
 @Mapper
 public interface UserMapper {
 
-
-    @Select("select * from user where username=#{username}")
-    User selectByUsername(User user);
-
     @Insert("insert into user(username,password,phone,email,create_time) values (#{username},#{password},#{phone},#{email},#{createTime})")
     void insert(User user);
 
@@ -31,4 +27,5 @@ public interface UserMapper {
     @Update("update user set password=#{password} where email=#{email}")
     void updatePassword(User user);
 
+    User selectByEmailAndRole(User user);
 }

@@ -22,8 +22,8 @@ public class UserService {
     VerificationCodeService verificationCodeService;
 
     public String login(User user) {
-        //查询邮箱是否被注册
-        User u = userMapper.selectByEmail(user.getEmail());
+        //查询用户是否存在，根据邮箱和用户角色关联查询
+        User u = userMapper.selectByEmailAndRole(user);
 
         if (u == null) {
             throw new BusinessException("请先注册");
@@ -61,8 +61,8 @@ public class UserService {
     }
 
     public void changePassword(User user) {
-        //判断用户是否已注册
-        if (userMapper.selectByEmail(user.getEmail()) == null) {
+        //判断用户是否已注册,根据邮箱和用户角色关联查询
+        if (userMapper.selectByEmailAndRole(user) == null) {
             throw new BusinessException("请先注册");
         }
         //验证验证码
