@@ -15,6 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //添加拦截器
-//        registry.addInterceptor(Interceptor).addPathPatterns("/highestScore","/record","/history");
+        registry.addInterceptor(Interceptor).addPathPatterns("/userInfo/*","/resident/**");
     }
 }

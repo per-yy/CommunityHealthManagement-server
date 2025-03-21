@@ -1,6 +1,7 @@
 package per.yy.communityhealthmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,12 +34,24 @@ public class UserController {
     @PostMapping("/send")
     public Result send(@RequestBody Map<String, String> params) {
         String email = params.get("email");
-        return Result.success(verificationCodeService.send(email));
+        verificationCodeService.send(email);
+        return Result.success();
     }
 
     @PostMapping("/changePassword")
     public Result changePassword(@RequestBody User user) {
         userService.changePassword(user);
+        return Result.success();
+    }
+
+    @GetMapping("/userInfo/query")
+    public Result getUserInfo(){
+        return Result.success(userService.getUserInfo());
+    }
+
+    @PostMapping("/userInfo/update")
+    public Result updateUserInfo(@RequestBody User user){
+        userService.updateUserInfo(user);
         return Result.success();
     }
 }

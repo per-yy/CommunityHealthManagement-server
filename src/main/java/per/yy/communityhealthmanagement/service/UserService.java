@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import per.yy.communityhealthmanagement.entity.User;
 import per.yy.communityhealthmanagement.exception.BusinessException;
 import per.yy.communityhealthmanagement.mapper.UserMapper;
+import per.yy.communityhealthmanagement.result.Result;
 import per.yy.communityhealthmanagement.utils.JwtUtil;
 import per.yy.communityhealthmanagement.utils.PasswordEncoder;
+import per.yy.communityhealthmanagement.utils.ThreadLocalUtil;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -71,5 +73,21 @@ public class UserService {
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         //更新密码
         userMapper.updatePassword(user);
+    }
+
+    public User getUserInfo() {
+        //从thread local中取出邮箱
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String email = (String) map.get("email");
+        //根据邮箱查出用户
+        User u= userMapper.selectByEmail(email);
+        //清空密码
+        u.setPassword(null);
+        return u;
+    }
+
+    public void updateUserInfo(User user) {
+        //user中包含不能修改的邮箱
+        userMapper.update(user);
     }
 }

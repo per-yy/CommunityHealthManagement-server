@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="per.yy.communityhealthmanagement.mapper.ResidentMapper">
+    <update id="updateHealthInfo">
+        update health_info
+        set height=#{healthInfo.height},
+            weight=#{healthInfo.weight},
+            bmi=#{healthInfo.bmi},
+            heart_rate=#{healthInfo.heartRate},
+            blood_type=#{healthInfo.bloodType},
+            blood_pressure=#{healthInfo.bloodPressure},
+            blood_fat=#{healthInfo.bloodFat},
+            blood_glucose=#{healthInfo.bloodGlucose},
+            medical_history=#{healthInfo.medicalHistory}
+        where resident_id = #{healthInfo.residentId}
+    </update>
+
+    <update id="updateResidentInfo">
+        update resident_info
+        set name=#{residentInfo.name},
+            gender=#{residentInfo.gender},
+            age=#{residentInfo.age},
+            address=#{residentInfo.address}
+        where user_id = #{userId}
+    </update>
+</mapper>

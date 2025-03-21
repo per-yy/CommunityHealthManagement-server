@@ -32,14 +32,12 @@ public class VerificationCodeService {
     }
 
     //发送验证码
-    public int send(String email) {
+    public void send(String email) {
         String code = VerificationCodeService.generateCode();
         try {
             MailUtil.sendMail(emailProperties, email, "社区健康管理系统", "你的验证码是：" + code + "<br/>验证码在3分钟内有效 请勿泄露给他人");
-            //验证码存入redis
+            //验证码存入redis 持续3分钟 与前端保持一致
             redisTemplate.opsForValue().set(email, code, 3, TimeUnit.MINUTES);
-            //返回持续时间，持续3分钟
-            return 60 * 3;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

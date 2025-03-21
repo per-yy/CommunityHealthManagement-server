@@ -28,4 +28,10 @@ public interface UserMapper {
     void updatePassword(User user);
 
     User selectByEmailAndRole(User user);
+
+    @Update("update user set username=#{username},phone=#{phone} where id=#{userId}")
+    void updateUserInfo(int userId, User user);
+
+    @Update("update user set username=#{username},phone=#{phone} where email=#{email}")
+    void update(User user);
 }
