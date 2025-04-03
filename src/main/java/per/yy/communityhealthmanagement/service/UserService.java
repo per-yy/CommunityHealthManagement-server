@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import per.yy.communityhealthmanagement.entity.User;
 import per.yy.communityhealthmanagement.exception.BusinessException;
+import per.yy.communityhealthmanagement.mapper.HealthInfoMapper;
+import per.yy.communityhealthmanagement.mapper.ResidentMapper;
 import per.yy.communityhealthmanagement.mapper.UserMapper;
-import per.yy.communityhealthmanagement.result.Result;
 import per.yy.communityhealthmanagement.utils.JwtUtil;
 import per.yy.communityhealthmanagement.utils.PasswordEncoder;
 import per.yy.communityhealthmanagement.utils.ThreadLocalUtil;
@@ -19,12 +20,15 @@ import java.util.Map;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
-    VerificationCodeService verificationCodeService;
+    private ResidentMapper residentMapper;
+    @Autowired
+    private HealthInfoMapper healthInfoMapper;
+    @Autowired
+    private VerificationCodeService verificationCodeService;
 
     public String login(User user) {
-        //查询用户是否存在，根据邮箱和用户角色关联查询
+        //查询用户是否存在，根据邮箱和用户角色查询
         User u = userMapper.selectByEmailAndRole(user);
 
         if (u == null) {
@@ -54,12 +58,14 @@ public class UserService {
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         //插入新用户
         userMapper.insert(user);
-        //查询角色id
-        int roleId = userMapper.selectIdByRole(user.getRole());
-        //查询用户id
-        int userId = userMapper.selectIdByEmail(user.getEmail());
-        //插入用户角色
-        userMapper.insertRole(userId, roleId);
+        //如果是居民则再新建居民基本信息和健康信息
+        if(user.getRole().equals("resident")){
+            //查出刚插入的用户的id
+            int userId = userMapper.selectIdByEmail(user.getEmail());
+            residentMapper.insert(userId);
+            int residentId=residentMapper.selectResidentIdByUserId(userId);
+            healthInfoMapper.insertHealthInfo(residentId);
+        }
     }
 
     public void changePassword(User user) {
@@ -80,7 +86,7 @@ public class UserService {
         Map<String, Object> map = ThreadLocalUtil.get();
         String email = (String) map.get("email");
         //根据邮箱查出用户
-        User u= userMapper.selectByEmail(email);
+        User u = userMapper.selectByEmail(email);
         //清空密码
         u.setPassword(null);
         return u;

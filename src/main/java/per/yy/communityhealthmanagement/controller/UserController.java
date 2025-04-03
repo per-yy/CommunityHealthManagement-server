@@ -8,17 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import per.yy.communityhealthmanagement.entity.User;
 import per.yy.communityhealthmanagement.result.Result;
 import per.yy.communityhealthmanagement.service.UserService;
-import per.yy.communityhealthmanagement.service.VerificationCodeService;
-
-import java.util.Map;
 
 @RestController
 public class UserController {
-
     @Autowired
     private UserService userService;
-    @Autowired
-    private VerificationCodeService verificationCodeService;
 
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
@@ -31,13 +25,6 @@ public class UserController {
         return Result.success();
     }
 
-    @PostMapping("/send")
-    public Result send(@RequestBody Map<String, String> params) {
-        String email = params.get("email");
-        verificationCodeService.send(email);
-        return Result.success();
-    }
-
     @PostMapping("/changePassword")
     public Result changePassword(@RequestBody User user) {
         userService.changePassword(user);
@@ -45,12 +32,12 @@ public class UserController {
     }
 
     @GetMapping("/userInfo/query")
-    public Result getUserInfo(){
+    public Result getUserInfo() {
         return Result.success(userService.getUserInfo());
     }
 
     @PostMapping("/userInfo/update")
-    public Result updateUserInfo(@RequestBody User user){
+    public Result updateUserInfo(@RequestBody User user) {
         userService.updateUserInfo(user);
         return Result.success();
     }

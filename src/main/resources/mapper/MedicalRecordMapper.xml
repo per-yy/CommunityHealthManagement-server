@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="per.yy.communityhealthmanagement.mapper.MedicalRecordMapper">
+
+    <insert id="insertMedicalRecord">
+        insert into medical_record(resident_id, visit_time, visit_type, hospital, department, doctor, diagnostic_result)
+        values (#{residentId}, #{medicalRecord.visitTime}, #{medicalRecord.visitType}, #{medicalRecord.hospital},
+                #{medicalRecord.department}, #{medicalRecord.doctor}, #{medicalRecord.diagnosticResult})
+    </insert>
+</mapper>
