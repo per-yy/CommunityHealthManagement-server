@@ -15,6 +15,4 @@
             medical_history=#{healthInfo.medicalHistory}
         where resident_id = #{healthInfo.residentId}
     </update>
-
-
 </mapper>

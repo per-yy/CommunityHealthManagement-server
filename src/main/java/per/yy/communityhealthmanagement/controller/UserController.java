@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import per.yy.communityhealthmanagement.entity.User;
 import per.yy.communityhealthmanagement.result.Result;
 import per.yy.communityhealthmanagement.service.UserService;
+import per.yy.communityhealthmanagement.utils.ThreadLocalUtil;
+
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -33,7 +36,10 @@ public class UserController {
 
     @GetMapping("/userInfo/query")
     public Result getUserInfo() {
-        return Result.success(userService.getUserInfo());
+        //从thread local中取出邮箱
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String email = (String) map.get("email");
+        return Result.success(userService.getUserInfo(email));
     }
 
     @PostMapping("/userInfo/update")

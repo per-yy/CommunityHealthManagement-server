@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import per.yy.communityhealthmanagement.entity.HealthInfo;
 import per.yy.communityhealthmanagement.result.Result;
 import per.yy.communityhealthmanagement.service.HeathInfoService;
+import per.yy.communityhealthmanagement.utils.ThreadLocalUtil;
+
+import java.util.Map;
 
 @RestController
 public class HealthInfoController {
@@ -16,14 +19,20 @@ public class HealthInfoController {
 
     //居民端修改居民健康信息
     @PostMapping("/health/update")
-    public Result updateHealthInfo(@RequestBody HealthInfo healthInfo){
-        heathInfoService.updateHealthInfo(healthInfo);
+    public Result updateHealthInfo(@RequestBody HealthInfo healthInfo) {
+        //从thread local中取出邮箱
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String email = (String) map.get("email");
+        heathInfoService.updateHealthInfo(email, healthInfo);
         return Result.success();
     }
 
     //居民端查询居民健康信息
     @GetMapping("/health/query")
-    public Result getHealthInfo(){
-        return Result.success(heathInfoService.getHealthInfo());
+    public Result getHealthInfo() {
+        //从thread local中取出邮箱
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String email = (String) map.get("email");
+        return Result.success(heathInfoService.getHealthInfo(email));
     }
 }

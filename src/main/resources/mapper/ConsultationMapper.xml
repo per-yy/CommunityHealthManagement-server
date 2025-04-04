@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="per.yy.communityhealthmanagement.mapper.ConsultationMapper">
+    <select id="selectByResidentId" resultType="per.yy.communityhealthmanagement.entity.Consultation">
+        select c.*, d.name as doctor_name
+        from consultation c
+                 left join
+             doctor_info d on c.doctor_id = d.id
+        where resident_id = #{residentId}
+    </select>
+    <insert id="insert">
+        insert into consultation (resident_id, title, content, create_time)
+        values (#{residentId}, #{title}, #{content}, #{createTime})
+    </insert>
+</mapper>

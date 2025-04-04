@@ -81,10 +81,7 @@ public class UserService {
         userMapper.updatePassword(user);
     }
 
-    public User getUserInfo() {
-        //从thread local中取出邮箱
-        Map<String, Object> map = ThreadLocalUtil.get();
-        String email = (String) map.get("email");
+    public User getUserInfo(String email) {
         //根据邮箱查出用户
         User u = userMapper.selectByEmail(email);
         //清空密码

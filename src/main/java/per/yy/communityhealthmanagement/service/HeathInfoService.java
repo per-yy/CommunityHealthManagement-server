@@ -6,9 +6,6 @@ import per.yy.communityhealthmanagement.entity.HealthInfo;
 import per.yy.communityhealthmanagement.mapper.HealthInfoMapper;
 import per.yy.communityhealthmanagement.mapper.ResidentMapper;
 import per.yy.communityhealthmanagement.mapper.UserMapper;
-import per.yy.communityhealthmanagement.utils.ThreadLocalUtil;
-
-import java.util.Map;
 
 @Service
 public class HeathInfoService {
@@ -19,10 +16,7 @@ public class HeathInfoService {
     @Autowired
     private HealthInfoMapper healthInfoMapper;
 
-    public HealthInfo getHealthInfo() {
-        //从thread local中取出邮箱
-        Map<String, Object> map = ThreadLocalUtil.get();
-        String email = (String) map.get("email");
+    public HealthInfo getHealthInfo(String email) {
         //根据邮箱查出用户id
         int userId=userMapper.selectIdByEmail(email);
         //根据用户id查出居民id
@@ -31,10 +25,7 @@ public class HeathInfoService {
         return healthInfoMapper.selectHealthInfoByResidentId(residentId);
     }
 
-    public void updateHealthInfo(HealthInfo healthInfo) {
-        //从thread local中取出邮箱
-        Map<String, Object> map = ThreadLocalUtil.get();
-        String email = (String) map.get("email");
+    public void updateHealthInfo(String email,HealthInfo healthInfo) {
         //根据邮箱查出用户id
         int userId=userMapper.selectIdByEmail(email);
         //根据用户id查出居民id
