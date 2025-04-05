@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="per.yy.communityhealthmanagement.mapper.ActivityMapper">
+    <select id="selectAll" resultType="per.yy.communityhealthmanagement.vo.ActivityVo">
+        SELECT a.*,
+               CASE
+                   WHEN EXISTS(
+                           SELECT 1
+                           FROM activity_registration r
+                           WHERE r.activity_id = a.id
+                             AND r.user_id = #{userId}
+                       ) THEN 1
+                   ELSE 0
+                   END AS is_joined
+        FROM activity a
+    </select>
+
+</mapper>
